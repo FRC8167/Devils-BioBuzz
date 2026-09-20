@@ -2,6 +2,9 @@ pluginManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = "https://mymaven.bylazar.com/releases"
+        }
         gradlePluginPortal()
     }
 }
