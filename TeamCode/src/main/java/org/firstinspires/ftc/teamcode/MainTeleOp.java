@@ -63,11 +63,11 @@ public class MainTeleOp extends CommandOpMode {
         //******OPERATOR CONTROLS*****
 
 
-        operator.getGamepadButton(GamepadKeys.Button.A)
-                .whenPressed(new InstantCommand(robot.intake::IntakeIn));
-
-        operator.getGamepadButton(GamepadKeys.Button.B)
-                .whenPressed(new InstantCommand(robot.intake::IntakeOut));
+//        operator.getGamepadButton(GamepadKeys.Button.A)
+//                .whenPressed(new InstantCommand(robot.intake::IntakeIn));
+//
+//        operator.getGamepadButton(GamepadKeys.Button.B)
+//                .whenPressed(new InstantCommand(robot.intake::IntakeOut));
 
 
 
