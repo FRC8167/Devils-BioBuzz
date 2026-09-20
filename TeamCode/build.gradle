@@ -41,10 +41,26 @@ dependencies {
     implementation project(':FtcRobotController')
     implementation "org.solverslib:core:0.3.6" //core
     implementation "org.solverslib:pedroPathing:0.3.6" //pedroPathing
+    implementation "com.bylazar:fullpanels:1.0.12"
 }
 
 repositories {
     maven{
         url "https://repo.dairy.foundation/releases"
+    }
+    maven {
+        url = 'https://maven.brott.dev/'
+    }
+
+    maven {
+        url = 'https://maven.pedropathing.com'
+    }
+    maven {
+        url = 'https://mymaven.bylazar.com/releases'
+    }
+
+    // Fpr Snapshot/Beta Versions of SolversLib
+    maven {
+        url "https://repo.dairy.foundation/snapshots"
     }
 }
