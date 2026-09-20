@@ -3,40 +3,99 @@ package org.firstinspires.ftc.teamcode.SubSystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
 import org.firstinspires.ftc.teamcode.Cogintilities.TeamConstants;
 
-public class Intake implements TeamConstants {
-    private final DcMotorEx intakeMotor;
+import com.seattlesolvers.solverslib.command.SubsystemBase;
+
+public class Intake extends SubsystemBase{
+
+    private final MotorEx intakeMotor;
+
+    private boolean isRunning;
+
+    private final double fSpeed = 0.75;
+    private final double rSpeed = -0.5;
+    private double speed = 0;
+    public MotorState motorstate = MotorState.STOP;
 
 
-    public Intake(DcMotorEx motor) {
-        this.intakeMotor = motor;
+    public Intake (MotorEx intakeMotor){
+        this.intakeMotor = intakeMotor;
+        intakeMotor.setInverted(true);
+        stop();
+    }
 
-        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intakeMotor.setPower(0);
+    public enum MotorState{
+        REVERSE,
+        STOP,
+        FORWARD
+    };
+
+    public void setMotorState(MotorState motorState)  {
+        this.motorstate = motorState;
+        setIntakeState();
     }
 
 
-    public void setMotorPower(double power) {
-        intakeMotor.setPower(power);
+    public void setIntakePower(double power){
+        this.speed = power;
+        intakeMotor.set(power);
     }
 
-    public void IntakeIn() {
-        setMotorPower(0.75);
+    public void setIntakeState()  {
+        switch(motorstate) {
+            case FORWARD:
+                intakeMotor.set(speed);
+                break;
+            case REVERSE:
+                intakeMotor.set(-speed);
+                break;
+            case STOP:
+            default:
+                intakeMotor.set(0.0);
+                break;
+
+        }
     }
 
-    public void IntakeOut() {
-        setMotorPower(-0.75);
+
+    public void stop(){
+        intakeMotor.set(0.0);
+        isRunning = false;
     }
 
 
-    public void IntakeOff() {
-        setMotorPower(0);
+    public void forward() {
+        if (isRunning){
+            stop();
+        } else{
+            intakeMotor.set(fSpeed);
+            isRunning = true;}
     }
 
 
+    public void reverse(){
+        if (isRunning){
+            stop();
+        }else{
+            intakeMotor.set(rSpeed);
+            isRunning = true;}
+    }
 
+    public void intakeOn() {
+        intakeMotor.set(fSpeed);
+        isRunning = true;
+    }
+
+    public void intakeReverse() {
+        intakeMotor.set(rSpeed);
+        isRunning = true;
+    }
+
+
+    public boolean getIntakeState(){
+        return isRunning;
+    }
 }
