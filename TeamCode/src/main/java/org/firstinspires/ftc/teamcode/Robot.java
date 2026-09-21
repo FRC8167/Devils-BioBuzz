@@ -5,6 +5,7 @@ import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.hardware.SensorColor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.teamcode.SubSystems.Intake;
 
 import org.firstinspires.ftc.teamcode.SubSystems.MecanumDrive;
 
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+//import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import com.pedropathing.follower.Follower;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
@@ -25,7 +26,7 @@ import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 import java.util.List;
 
 
-public class Robot{
+public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
     private static final Robot instance = new Robot();
     public static Robot getInstance() {
@@ -64,7 +65,7 @@ public class Robot{
     public void init(HardwareMap hardwareMap) throws InterruptedException {
 
         // Hardware
-        MotorEx driveMotorRF = new MotorEx(hardwareMap, "RightFront").setCachingTolerance(0.01);
+        MotorEx driveMotorRF = new MotorEx(hardwareMap, "RightFront").setCachingTolerance(0.01); //TODO: update with actual motor types
         MotorEx driveMotorLF = new MotorEx(hardwareMap, "LeftFront").setCachingTolerance(0.01);
         MotorEx driveMotorLR = new MotorEx(hardwareMap, "LeftRear").setCachingTolerance(0.01);
         MotorEx driveMotorRR = new MotorEx(hardwareMap, "RightRear").setCachingTolerance(0.01);

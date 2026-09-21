@@ -14,7 +14,7 @@ import com.seattlesolvers.solverslib.command.WaitCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
+//import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
 
 
 //@Disabled
@@ -52,7 +52,7 @@ public class MainTeleOp extends CommandOpMode {
         }
 
 
-        robot.mecanumDrive.setDefaultCommand(new DriveCommand(robot.mecanumDrive, gamepad1));
+//        robot.mecanumDrive.setDefaultCommand(new DriveCommand(robot.mecanumDrive, gamepad1));
 
 
 
@@ -64,10 +64,10 @@ public class MainTeleOp extends CommandOpMode {
 
 
         operator.getGamepadButton(GamepadKeys.Button.A)
-                .whenPressed(new InstantCommand(robot.intake::IntakeIn));
+                .whenPressed(new InstantCommand(robot.intake::IntakeIn)); //TODO: Needs requirement?
 
         operator.getGamepadButton(GamepadKeys.Button.B)
-                .whenPressed(new InstantCommand(robot.intake::IntakeOut));
+                .whenPressed(new InstantCommand(robot.intake::IntakeOut)); //TODO: Needs requirement?
 
 
 
