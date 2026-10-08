@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.SubSystems.Intake;
 
 import org.firstinspires.ftc.teamcode.SubSystems.MecanumDrive;
 
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import com.pedropathing.follower.Follower;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
@@ -25,7 +24,7 @@ import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 import java.util.List;
 
 
-public class Robot{
+public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
     private static final Robot instance = new Robot();
     public static Robot getInstance() {
@@ -57,7 +56,7 @@ public class Robot{
 
     public Follower follower;
     public MecanumDrive mecanumDrive;
-    public Intake intake;
+//    public Intake intake;
 
 
 
@@ -71,7 +70,7 @@ public class Robot{
 
 //        follower = Constants.createFollower(hardwareMap);
 
-        MotorEx intakeMotor    = new MotorEx(hardwareMap, "Intake").setCachingTolerance(0.01);
+//        MotorEx intakeMotor    = new MotorEx(hardwareMap, "Intake").setCachingTolerance(0.01);
 
 
         ctrlHubs = hardwareMap.getAll(LynxModule.class);
@@ -82,11 +81,11 @@ public class Robot{
 
         //Instantiate Subsystems
         mecanumDrive = new MecanumDrive(driveMotorLF, driveMotorLR, driveMotorRF, driveMotorRR);
-        intake  = new Intake(intakeMotor);
+//        intake  = new Intake(intakeMotor);
 
 
         //Register Subsystems
-        register(mecanumDrive, intake);
+        register(mecanumDrive);
 
         if (OP_MODE_TYPE.equals(OpModeType.AUTO)) {
             initHasMovement();
