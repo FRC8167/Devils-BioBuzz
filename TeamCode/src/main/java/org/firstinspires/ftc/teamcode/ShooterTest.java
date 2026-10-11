@@ -22,24 +22,30 @@ public class ShooterTest extends LinearOpMode {
         shooterMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         shooterMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        MotorInformation.adjustMotor(shooterMotor, DefaultMotorInfo.GOBILDA_1620RPM);
+        MotorInformation.adjustMotor(shooterMotor, DefaultMotorInfo.GOBILDA_6000RPM);
+
 
         double speed;
 
         waitForStart();
         while (opModeIsActive()) {
             //Change input states according to gamepad buttons pressed
-            if (gamepad1.a) {
-                speed = 0.75;
-            }
-            else if (gamepad1.b) {
-                speed = -0.5;
-            }
-            else {
-                speed = 0;
-            }
+//            if (gamepad1.a) {
+//                speed = 0.57;
+//            }
+//            else if (gamepad1.b) {
+//                speed = -0.57;
+//            }
+//            else {
+//                speed = 0;
+//            }
+            speed = -gamepad1.right_stick_y;
 
             shooterMotor.setPower(speed);
+
+            telemetry.addData("Speed", speed);
+            telemetry.update();
+
         }
     }
 
