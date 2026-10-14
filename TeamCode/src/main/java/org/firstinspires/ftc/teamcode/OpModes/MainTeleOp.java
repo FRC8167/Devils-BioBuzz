@@ -14,7 +14,7 @@ import com.seattlesolvers.solverslib.command.WaitCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
-import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
+//import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.Robot;
 //import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
 
@@ -54,7 +54,7 @@ public class MainTeleOp extends CommandOpMode {
         }
 
 
-        robot.mecanumDrive.setDefaultCommand(new DriveCommand(robot.mecanumDrive, gamepad1));
+//        robot.mecanumDrive.setDefaultCommand(new DriveCommand(robot.mecanumDrive, gamepad1));
 
 
 
