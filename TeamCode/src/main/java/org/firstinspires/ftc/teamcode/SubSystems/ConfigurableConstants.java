@@ -9,10 +9,10 @@ public class ConfigurableConstants {
 
     private static PIDFCoefficients pidfCoefficients = new PIDFCoefficients();
 
-    public static double kP = 1.5;
-    public static double kI = 0;
-    public static double kD = 0;
-    public static double kF = 5;
+    public static double kP = 1.5; // P = 0.1 × F
+    public static double kI = 0; // I = 0.1 × P
+    public static double kD = 0; // D = 0;
+    public static double kF = 5; // F = 32767 ÷ maxV(t/s)!!! TODO: implement this!
 
     public static PIDFCoefficients getPidfCoefficients() {
         return new PIDFCoefficients(pidfCoefficients);
