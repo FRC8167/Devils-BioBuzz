@@ -15,6 +15,7 @@ import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 //import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.Robot;
 //import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
 
@@ -54,7 +55,7 @@ public class MainTeleOp extends CommandOpMode {
         }
 
 
-//        robot.mecanumDrive.setDefaultCommand(new DriveCommand(robot.mecanumDrive, gamepad1));
+        robot.mecanumDrive.setDefaultCommand(new DriveCommand(robot.mecanumDrive, gamepad1));
 
 
 
@@ -65,11 +66,22 @@ public class MainTeleOp extends CommandOpMode {
         //******OPERATOR CONTROLS*****
 
 
+//        operator.getGamepadButton(GamepadKeys.Button.A)
+//                .whenPressed(new InstantCommand(robot.intake::IntakeIn));
+//
+//        operator.getGamepadButton(GamepadKeys.Button.B)
+//                .whenPressed(new InstantCommand(robot.intake::IntakeOut));
         operator.getGamepadButton(GamepadKeys.Button.A)
-                .whenPressed(new InstantCommand(robot.intake::IntakeIn));
+                .whenPressed(() -> robot.intakeMotor.setVelocity(100))
+                .whenReleased(() -> robot.intakeMotor.setVelocity(0));
+        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(() -> robot.shooterMotor.setVelocity(4000));
+        operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(() -> robot.shooterMotor.setVelocity(0));
 
         operator.getGamepadButton(GamepadKeys.Button.B)
-                .whenPressed(new InstantCommand(robot.intake::IntakeOut));
+                .whenPressed(() -> robot.dropServo.setPosition(0.3))
+                .whenReleased(() -> robot.dropServo.setPosition(0));
 
 
 

@@ -4,7 +4,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.hardware.SensorColor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
@@ -13,9 +15,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 //import org.firstinspires.ftc.teamcode.Cogintilities.MirrorUtility;
 
+import org.firstinspires.ftc.teamcode.Cogintilities.DefaultMotorInfo;
 import org.firstinspires.ftc.teamcode.SubSystems.Intake;
 
 import org.firstinspires.ftc.teamcode.SubSystems.MecanumDrive;
+import org.firstinspires.ftc.teamcode.SubSystems.Motor1D;
+import org.firstinspires.ftc.teamcode.SubSystems.Servo1D;
 
 //import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -58,7 +63,10 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
     public Follower follower;
     public MecanumDrive mecanumDrive;
-    public Intake intake;
+//    public Intake intake;
+    public Motor1D intakeMotor;
+    public Motor1D shooterMotor;
+    public Servo1D dropServo;
 
 
 
@@ -70,9 +78,32 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
         MotorEx driveMotorLR = new MotorEx(hardwareMap, "LeftRear").setCachingTolerance(0.01);
         MotorEx driveMotorRR = new MotorEx(hardwareMap, "RightRear").setCachingTolerance(0.01);
 
+        dropServo = new Servo1D(
+                hardwareMap.get(Servo.class, "DropServo"),
+                0, 0, 1, true
+        );
 //        follower = Constants.createFollower(hardwareMap);
 
-        MotorEx intakeMotor    = new MotorEx(hardwareMap, "Intake").setCachingTolerance(0.01);
+        intakeMotor  = new Motor1D(
+                hardwareMap.get(DcMotorEx.class, "Intake"),
+                Motor1D.Mode.VELOCITY_BASED,
+                DefaultMotorInfo.GOBILDA_312RPM
+        );
+
+        intakeMotor.setVelocityPIDFCoefficients(
+                1.17190741191,
+                0.117190741191,
+                0,
+                11.7190741191
+        );
+
+        shooterMotor = new Motor1D(
+                hardwareMap.get(DcMotorEx.class, "Shooter"),
+                Motor1D.Mode.VELOCITY_BASED,
+                DefaultMotorInfo.GOBILDA_6000RPM
+        );
+
+        shooterMotor.setVelocityPIDFCoefficients(1.5,0,0,5);
 
 
         ctrlHubs = hardwareMap.getAll(LynxModule.class);
@@ -83,11 +114,11 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
         //Instantiate Subsystems
         mecanumDrive = new MecanumDrive(driveMotorLF, driveMotorLR, driveMotorRF, driveMotorRR);
-        intake  = new Intake(intakeMotor);
+//        intake  = new Intake(intakeMotor);
 
 
         //Register Subsystems
-        register(mecanumDrive, intake);
+        register(mecanumDrive);
 
         if (OP_MODE_TYPE.equals(OpModeType.AUTO)) {
             initHasMovement();
