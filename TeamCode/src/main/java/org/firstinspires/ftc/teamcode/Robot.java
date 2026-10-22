@@ -87,14 +87,14 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
         intakeMotor  = new Motor1D(
                 hardwareMap.get(DcMotorEx.class, "Intake"),
                 Motor1D.Mode.VELOCITY_BASED,
-                DefaultMotorInfo.GOBILDA_312RPM
+                DefaultMotorInfo.GOBILDA_117RPM
         );
 
         intakeMotor.setVelocityPIDFCoefficients(
-                1.17190741191,
-                0.117190741191,
+                1.17911653523,
+                0.117911653523,
                 0,
-                11.7190741191
+                11.7911653523
         );
 
         shooterMotor = new Motor1D(
