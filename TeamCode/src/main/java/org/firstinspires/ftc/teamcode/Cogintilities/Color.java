@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.Cogintilities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import org.jetbrains.annotations.Contract;
+import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
 public enum Color implements TeamConstants {
     BLACK (Double.NaN,      "#000000", new RgbValues(0,   0,   0  )),

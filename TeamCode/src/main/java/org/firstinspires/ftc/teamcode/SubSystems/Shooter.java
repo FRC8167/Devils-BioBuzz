@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode.SubSystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.Cogintilities.BetterMotor;
 import org.firstinspires.ftc.teamcode.Cogintilities.DefaultMotorInfo;
-import org.firstinspires.ftc.teamcode.Cogintilities.MotorInformation;
-import org.firstinspires.ftc.teamcode.Cogintilities.TeamConstants;
+import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
 public class Shooter extends Motor1D implements TeamConstants {
 //    public final BetterMotor motor;

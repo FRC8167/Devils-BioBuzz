@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.util.Range;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Robot;
 
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
@@ -52,6 +51,7 @@ public class  MecanumDrive extends SubsystemBase {
 
         // Initialize motors
         setMotorPower(0, 0, 0, 0);
+        //TODO: consider registering in the constructor: CommandScheduler.getInstance().registerSubsystem(this);
     }
 
 

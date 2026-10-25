@@ -1,22 +1,17 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Robot;
 
 //import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.seattlesolvers.solverslib.command.CommandOpMode;
-import com.seattlesolvers.solverslib.hardware.SensorColor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 //import org.firstinspires.ftc.teamcode.Cogintilities.MirrorUtility;
 
 import org.firstinspires.ftc.teamcode.Cogintilities.DefaultMotorInfo;
-import org.firstinspires.ftc.teamcode.SubSystems.Intake;
 
 import org.firstinspires.ftc.teamcode.SubSystems.MecanumDrive;
 import org.firstinspires.ftc.teamcode.SubSystems.Motor1D;
@@ -25,7 +20,6 @@ import org.firstinspires.ftc.teamcode.SubSystems.Servo1D;
 //import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import com.pedropathing.follower.Follower;
-import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
 
 import java.util.List;
@@ -73,10 +67,12 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
     public void init(HardwareMap hardwareMap) throws InterruptedException {
 
         // Hardware
-        MotorEx driveMotorRF = new MotorEx(hardwareMap, "RightFront").setCachingTolerance(0.01); //TODO: update with actual motor types
+        MotorEx driveMotorRF = new MotorEx(hardwareMap, "RightFront").setCachingTolerance(0.01); //TODO: update with actual motor types (SolversMotor?)
         MotorEx driveMotorLF = new MotorEx(hardwareMap, "LeftFront").setCachingTolerance(0.01);
         MotorEx driveMotorLR = new MotorEx(hardwareMap, "LeftRear").setCachingTolerance(0.01);
         MotorEx driveMotorRR = new MotorEx(hardwareMap, "RightRear").setCachingTolerance(0.01);
+
+        //TODO: check for inverted motors (test works but ensure none are actually inverted, or invert them if needed)
 
         dropServo = new Servo1D(
                 hardwareMap.get(Servo.class, "DropServo"),

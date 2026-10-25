@@ -3,7 +3,7 @@
 //import org.firstinspires.ftc.teamcode.Cogintilities.Prism.PrismColor;
 //import org.firstinspires.ftc.teamcode.Cogintilities.Prism.GoBildaPrismDriver;
 //import org.firstinspires.ftc.teamcode.Cogintilities.Prism.PrismAnimations;
-//import org.firstinspires.ftc.teamcode.Cogintilities.TeamConstants;
+//import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 //
 //public class DataPrism implements TeamConstants {
 //

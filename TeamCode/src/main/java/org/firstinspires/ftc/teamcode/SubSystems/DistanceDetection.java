@@ -6,7 +6,7 @@
 //import com.qualcomm.hardware.rev.RevColorSensorV3;
 //
 //import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-//import org.firstinspires.ftc.teamcode.Cogintilities.TeamConstants;
+//import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 //
 //public class DistanceDetection implements TeamConstants {
 //    private final Rev2mDistanceSensor distanceSensor;

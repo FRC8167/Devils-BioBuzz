@@ -1,22 +1,16 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
 
-import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
-import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
-import com.seattlesolvers.solverslib.command.RunCommand;
-import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
-import com.seattlesolvers.solverslib.command.WaitCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 //import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.Robot.Robot;
 //import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
 
 
@@ -42,7 +36,7 @@ public class MainTeleOp extends CommandOpMode {
     @Override
     public void initialize() {
 
-        // Must have for all opModes
+        // Must-have for all opModes
 //        Robot.OP_MODE_TYPE = Robot.OpModeType.TELEOP;
         // Resets the command scheduler
         super.reset();

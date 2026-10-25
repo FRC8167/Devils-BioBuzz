@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.SubSystems;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
-import org.firstinspires.ftc.teamcode.Cogintilities.TeamConstants;
+import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
 public class Intake extends SubsystemBase implements TeamConstants {
     private final MotorEx intakeMotor;

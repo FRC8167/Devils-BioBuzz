@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Cogintilities;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-//import org.firstinspires.ftc.teamcode.Robot.RobotConfiguration;
+//import org.firstinspires.ftc.teamcode.Robot.Robot.RobotConfiguration;
 
 public final class GamepadUtility {
 
