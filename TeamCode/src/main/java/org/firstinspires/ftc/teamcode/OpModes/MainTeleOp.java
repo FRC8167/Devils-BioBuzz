@@ -71,15 +71,15 @@ public class MainTeleOp extends CommandOpMode {
 //
 //        operator.getGamepadButton(GamepadKeys.Button.B)
 //                .whenPressed(new InstantCommand(robot.intake::IntakeOut));
-        operator.getGamepadButton(GamepadKeys.Button.A)
+        driver.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(() -> robot.intakeMotor.setVelocity(100))
                 .whenReleased(() -> robot.intakeMotor.setVelocity(0));
-        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenPressed(() -> robot.shooterMotor.setVelocity(4000));
-        operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenPressed(() -> robot.shooterMotor.setVelocity(0));
 
-        operator.getGamepadButton(GamepadKeys.Button.B)
+        driver.getGamepadButton(GamepadKeys.Button.B)
                 .whenPressed(() -> robot.dropServo.setPosition(0.3))
                 .whenReleased(() -> robot.dropServo.setPosition(0));
 
