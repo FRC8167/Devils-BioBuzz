@@ -120,9 +120,9 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
         //Register Subsystems
         register(mecanumDrive);
 
-        if (OP_MODE_TYPE.equals(OpModeType.AUTO)) {
-            initHasMovement();
-        }
+//        if (OP_MODE_TYPE.equals(OpModeType.AUTO)) {
+//            initHasMovement();
+//        }
     }
 
     public void initHasMovement() {
