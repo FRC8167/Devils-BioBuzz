@@ -58,7 +58,7 @@ public class TestAll extends LinearOpMode {
         MotorEx driveMotorRR = new MotorEx(hardwareMap, "RightRear").setCachingTolerance(0.01);
         driveMotorLF.setInverted(true);
         driveMotorLR.setInverted(true);
-        driveMotorRF.setInverted(false);
+        driveMotorRF.setInverted(true);  //changed 10-27
         driveMotorRR.setInverted(false);
 
 
@@ -85,14 +85,14 @@ public class TestAll extends LinearOpMode {
             } else {
                 intakeServoR.setPower(0);
             }
-            if (gamepad2.aWasPressed()) {
+            if (gamepad1.aWasPressed()) {
                 if (currentMode == IntakeState.FORWARD) {
                     currentMode = IntakeState.STOPPED; // If already running forward, stop it
                 } else {
                     currentMode = IntakeState.FORWARD; // Otherwise, turn it forward
                 }
             }
-            else if (gamepad2.bWasPressed()) {
+            else if (gamepad1.bWasPressed()) {
                 if (currentMode == IntakeState.REVERSE) {
                     currentMode = IntakeState.STOPPED; // If already reversing, stop it
                 } else {

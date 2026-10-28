@@ -56,7 +56,7 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
     public Follower follower;
     public MecanumDrive mecanumDrive;
-//    public Intake intake;
+    public Intake intake;
 
 
 
@@ -70,7 +70,7 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
 //        follower = Constants.createFollower(hardwareMap);
 
-//        MotorEx intakeMotor    = new MotorEx(hardwareMap, "Intake").setCachingTolerance(0.01);
+        MotorEx intakeMotor    = new MotorEx(hardwareMap, "Intake").setCachingTolerance(0.01);
 
 
         ctrlHubs = hardwareMap.getAll(LynxModule.class);
@@ -81,7 +81,7 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
         //Instantiate Subsystems
         mecanumDrive = new MecanumDrive(driveMotorLF, driveMotorLR, driveMotorRF, driveMotorRR);
-//        intake  = new Intake(intakeMotor);
+        intake  = new Intake(intakeMotor);
 
 
         //Register Subsystems
