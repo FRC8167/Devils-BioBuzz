@@ -68,13 +68,17 @@ public class MainTeleOp extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(() -> robot.intakeMotor.setVelocity(100))
                 .whenReleased(() -> robot.intakeMotor.setVelocity(0));
-        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whenPressed(() -> robot.shooterMotor.setVelocity(4000));
+//        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+//                .whenPressed(() -> robot.shooterMotor.setVelocity(4000));
+//        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+//                .whenPressed(() -> robot.shooterMotor.setVelocity(0));
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(() -> robot.shooterMotor.setVelocity(0));
+                .whenPressed(() -> robot.shooterMotor.setVelocity(4000)) //TODO: Readjust velocity
+                .whenReleased(() -> robot.shooterMotor.setVelocity(0));
+
 
         driver.getGamepadButton(GamepadKeys.Button.B)
-                .whenPressed(() -> robot.dropServo.setPosition(0.3))
+                .whenPressed(() -> robot.dropServo.setPosition(0.1))
                 .whenReleased(() -> robot.dropServo.setPosition(0));
 
 
