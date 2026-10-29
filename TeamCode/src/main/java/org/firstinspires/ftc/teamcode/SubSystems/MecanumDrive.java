@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.SubSystems;
 
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.Range;
+import com.seattlesolvers.solverslib.command.CommandBase;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -51,7 +53,8 @@ public class  MecanumDrive extends SubsystemBase {
 
         // Initialize motors
         setMotorPower(0, 0, 0, 0);
-        //TODO: consider registering in the constructor: CommandScheduler.getInstance().registerSubsystem(this);
+
+        register();
     }
 
 
@@ -167,6 +170,48 @@ public class  MecanumDrive extends SubsystemBase {
 
     public double getControlAuthority() {
         return controlAuthority;
+    }
+
+    public void setDefaultCmdGamepad(Gamepad gamepad) {
+        setDefaultCommand(new DriveCommand(gamepad));
+    }
+
+    public class DriveCommand extends CommandBase {
+
+        private final MecanumDrive drive = MecanumDrive.this;
+        private final Gamepad gamepad;
+
+        public DriveCommand(Gamepad gamepad) {
+            this.gamepad = gamepad;
+            addRequirements(drive);
+        }
+
+        @Override
+        public void execute() {
+
+            // Read sticks
+            double forward = -gamepad.left_stick_y;  // forward/backward
+            double strafe  = gamepad.left_stick_x;  // left/right
+            double turn    = gamepad.right_stick_x; // rotation
+
+            // Apply deadzone
+            if (Math.abs(forward) < 0.05) forward = 0;
+            if (Math.abs(strafe) < 0.05) strafe = 0;
+            if (Math.abs(turn) < 0.05) turn = 0;
+
+            // Call subsystem drive method
+            drive.drive(forward, strafe, turn);
+        }
+
+        @Override
+        public boolean isFinished() {
+            return false; // TeleOp runs continuously
+        }
+
+        @Override
+        public void end(boolean interrupted) {
+            drive.drive(0,0,0); // stop motors
+        }
     }
 
 }

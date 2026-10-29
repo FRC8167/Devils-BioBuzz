@@ -1,67 +1,38 @@
 package org.firstinspires.ftc.teamcode.SubSystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.seattlesolvers.solverslib.command.InstantCommand;
+import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.teamcode.Cogintilities.DefaultMotorInfo;
 import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
-public class Shooter extends Motor1D implements TeamConstants {
-//    public final BetterMotor motor;
-//
-//    private double minSpeedRPM;
+public class Shooter extends SubsystemBase implements TeamConstants {
+    private final Motor1D shooterMotor;
+
 
     public Shooter(DcMotorEx motor) {
-//        this.motor = new BetterMotor(motor);
-        super(motor, Mode.VELOCITY_BASED, DefaultMotorInfo.GOBILDA_6000RPM);
-        setVelocityPIDFCoefficients(26,0,14,12.7);
-        setZeroPowerBehavior(ZeroPowerBehavior.BREAK);
-//        this.motor = motor;
-//        MotorInformation.adjustMotor(this.motor, DefaultMotorInfo.GOBILDA_6000RPM);
-//        this.motor.setDirection(DcMotorSimple.Direction.FORWARD);
-//        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-//        this.motor.setPower(0);
-//        minSpeedRPM = 0;
+        shooterMotor = new Motor1D(
+                motor,
+                Motor1D.Mode.VELOCITY_BASED,
+                DefaultMotorInfo.GOBILDA_6000RPM
+        );
+        shooterMotor.setVelocityPIDFCoefficients(1.5,0,0,5);
+        register();
     }
 
-    public boolean isCloseEnough(double tolerance) {
-        double vel = getVelocityRPM();
-        double tarVel = getTargetVelocityRPM();
-        return tarVel - tolerance <= vel && tarVel + tolerance >= vel;
+
+    public void setVelocityRPM(double velocityRPM) {
+        shooterMotor.setVelocityRPM(velocityRPM);
     }
 
-//    public void setMotorPower(double power) {
-//        motor.setPower(power);
-//    }
-//
-//    public double getMotorPower() {
-//        return motor.getPower();
-//    }
-//
-//    public double getMotorSpeedRPM() {
-//        return motor.getVelocity()/SHOOTER_TICKS_PER_REV*60.0; //Speed in RPM
-//    }
-//
-//    public double getMotorSpeedRpmExperimental() {
-//        return motor.getVelocity(AngleUnit.DEGREES)/360.0*60.0; //Speed in RPM
-//    }
-//
-//    public double getMotorSpeed() {
-//        return motor.getVelocity()/SHOOTER_TICKS_PER_REV; //Speed in RPS
-//    }
-//
-//    public boolean getBusy() {
-//        return motor.isBusy();
-//    }
-//
-//    public double getMinSpeedRPM() {
-//        return minSpeedRPM;
-//    }
-//
-//    public void resetMin() {
-//        minSpeedRPM = getMotorSpeedRPM();
-//    }
-//
-//    public void update() {
-//        minSpeedRPM = Math.min(getMotorSpeedRPM(), minSpeedRPM);
-//    }
+    public void setProportion(double proportion) {
+        shooterMotor.setVelocityFractional(proportion);
+    }
+
+    public InstantCommand setVelocityRpmCommand(double velocityRPM) {
+        return new InstantCommand(
+                () -> shooterMotor.setVelocityRPM(velocityRPM)
+        );
+    }
 }

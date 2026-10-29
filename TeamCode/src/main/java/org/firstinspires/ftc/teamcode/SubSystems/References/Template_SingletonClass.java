@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.SubSystems;
+package org.firstinspires.ftc.teamcode.SubSystems.References;
 
 public class Template_SingletonClass {
 

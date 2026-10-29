@@ -13,9 +13,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.firstinspires.ftc.teamcode.Cogintilities.DefaultMotorInfo;
 
+import org.firstinspires.ftc.teamcode.SubSystems.Gate;
+import org.firstinspires.ftc.teamcode.SubSystems.Intake;
 import org.firstinspires.ftc.teamcode.SubSystems.MecanumDrive;
 import org.firstinspires.ftc.teamcode.SubSystems.Motor1D;
 import org.firstinspires.ftc.teamcode.SubSystems.Servo1D;
+import org.firstinspires.ftc.teamcode.SubSystems.Shooter;
 
 //import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -58,9 +61,13 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
     public Follower follower;
     public MecanumDrive mecanumDrive;
 //    public Intake intake;
-    public Motor1D intakeMotor;
-    public Motor1D shooterMotor;
-    public Servo1D dropServo;
+//    public Motor1D intakeMotor;
+//    public Motor1D shooterMotor;
+    public Intake intake;
+    public Shooter shooter;
+    public Gate gate;
+
+//    public Servo1D dropServo;
 
 
 
@@ -72,34 +79,33 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
         MotorEx driveMotorLR = new MotorEx(hardwareMap, "LeftRear").setCachingTolerance(0.01);
         MotorEx driveMotorRR = new MotorEx(hardwareMap, "RightRear").setCachingTolerance(0.01);
 
-        //TODO: check for inverted motors (test works but ensure none are actually inverted, or invert them if needed)
 
-        dropServo = new Servo1D(
-                hardwareMap.get(Servo.class, "DropServo"),
-                0, 0, 1, true
-        );
+//        dropServo = new Servo1D(
+//                hardwareMap.get(Servo.class, "DropServo"),
+//                0, 0, 1, true
+//        );
 //        follower = Constants.createFollower(hardwareMap);
 
-        intakeMotor  = new Motor1D(
-                hardwareMap.get(DcMotorEx.class, "Intake"),
-                Motor1D.Mode.VELOCITY_BASED,
-                DefaultMotorInfo.GOBILDA_117RPM
-        );
+//        intakeMotor  = new Motor1D(
+//                hardwareMap.get(DcMotorEx.class, "Intake"),
+//                Motor1D.Mode.VELOCITY_BASED,
+//                DefaultMotorInfo.GOBILDA_117RPM
+//        );
+//
+//        intakeMotor.setVelocityPIDFCoefficients(
+//                1.17911653523,
+//                0.117911653523,
+//                0,
+//                11.7911653523
+//        );
 
-        intakeMotor.setVelocityPIDFCoefficients(
-                1.17911653523,
-                0.117911653523,
-                0,
-                11.7911653523
-        );
-
-        shooterMotor = new Motor1D(
-                hardwareMap.get(DcMotorEx.class, "Shooter"),
-                Motor1D.Mode.VELOCITY_BASED,
-                DefaultMotorInfo.GOBILDA_6000RPM
-        );
-
-        shooterMotor.setVelocityPIDFCoefficients(1.5,0,0,5);
+//        shooterMotor = new Motor1D(
+//                hardwareMap.get(DcMotorEx.class, "Shooter"),
+//                Motor1D.Mode.VELOCITY_BASED,
+//                DefaultMotorInfo.GOBILDA_6000RPM
+//        );
+//
+//        shooterMotor.setVelocityPIDFCoefficients(1.5,0,0,5);
 
 
         ctrlHubs = hardwareMap.getAll(LynxModule.class);
@@ -110,11 +116,13 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
         //Instantiate Subsystems
         mecanumDrive = new MecanumDrive(driveMotorLF, driveMotorLR, driveMotorRF, driveMotorRR);
-//        intake  = new Intake(intakeMotor);
+        intake       = new Intake(hardwareMap.get(DcMotorEx.class, "Intake"));
+        shooter      = new Shooter(hardwareMap.get(DcMotorEx.class, "Shooter"));
+        gate         = new Gate(hardwareMap.get(Servo.class, "DropServo"));
 
 
-        //Register Subsystems
-        register(mecanumDrive);
+//        //Register Subsystems
+//        register(mecanumDrive);
 
 //        if (OP_MODE_TYPE.equals(OpModeType.AUTO)) {
 //            initHasMovement();
