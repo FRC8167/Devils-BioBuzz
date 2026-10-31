@@ -1,14 +1,18 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
 
+import com.bylazar.telemetry.JoinedTelemetry;
+import com.bylazar.telemetry.PanelsTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
+import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 //import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot.Robot;
 //import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
 
@@ -23,6 +27,10 @@ public class MainTeleOp extends CommandOpMode {
     private final Robot robot =   Robot.getInstance();
 //    static TelemetryManager telemetryM;
 
+    Telemetry dsTelemetry     = telemetry;
+    Telemetry panelsTelemetry = PanelsTelemetry.INSTANCE.getFtcTelemetry();
+    Telemetry joinedTelemetry = new JoinedTelemetry(panelsTelemetry, dsTelemetry);
+
 
     public static double current_velocity = 3200;
     public double increment = 25;
@@ -36,7 +44,7 @@ public class MainTeleOp extends CommandOpMode {
     public void initialize() {
 
         // Must-have for all opModes
-//        Robot.OP_MODE_TYPE = Robot.OpModeType.TELEOP;
+        Robot.OP_MODE_TYPE = Robot.OpModeType.TELEOP; //TODO: Implement as init parameter?
         // Resets the command scheduler
         super.reset();
 
@@ -46,6 +54,8 @@ public class MainTeleOp extends CommandOpMode {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        telemetry = joinedTelemetry;
 
 
 //        robot.mecanumDrive.setDefaultCommand(robot.mecanumDrive.new DriveCommand(gamepad1));
@@ -104,7 +114,5 @@ public class MainTeleOp extends CommandOpMode {
     @Override
     public void run() {
         super.run();
-
-
     }
 }
