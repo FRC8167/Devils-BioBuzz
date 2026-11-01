@@ -16,30 +16,46 @@ public class Intake extends SubsystemBase implements TeamConstants {
     public Intake(DcMotorEx motor) {
         intakeMotor = new Motor1D(
                 motor,
-                Motor1D.Mode.VELOCITY_BASED,
-                DefaultMotorInfo.GOBILDA_117RPM
+                Motor1D.Mode.POWER_BASED,
+                DefaultMotorInfo.GOBILDA_1150RPM
         );
-        intakeMotor.setVelocityPIDFCoefficients(
-                1.17911653523,
-                0.117911653523,
-                0,
-                11.7911653523
-        );
+//        intakeMotor.setVelocityPIDFCoefficients( //Note: these are definitely wrong
+//                1.17911653523,
+//                0.117911653523,
+//                0,
+//                11.7911653523
+//        );
+        intakeMotor.setDirection(Motor1D.Direction.REVERSE);
+
         register();
     }
 
 
-    public void setVelocityRPM(double velocityRPM) {
-        intakeMotor.setVelocityRPM(velocityRPM);
+//    public void setVelocityRPM(double velocityRPM) {
+//        intakeMotor.setVelocityRPM(velocityRPM);
+//    }
+
+    public void setPower(double power) {
+        intakeMotor.setRawPower(power);
+    }
+
+    public double getVelocityRPM() {
+        return intakeMotor.getVelocityRPM();
     }
 
     public void setProportion(double proportion) {
         intakeMotor.setVelocityFractional(proportion);
     }
 
-    public InstantCommand setVelocityRpmCommand(double velocityRPM) {
+//    public InstantCommand setVelocityRpmCommand(double velocityRPM) {
+//        return new InstantCommand(
+//                () -> intakeMotor.setVelocityRPM(velocityRPM)
+//        );
+//    }
+
+    public InstantCommand setPowerCommand(double power) {
         return new InstantCommand(
-                () -> intakeMotor.setVelocityRPM(velocityRPM)
+                () -> intakeMotor.setRawPower(power)
         );
     }
 

@@ -17,13 +17,23 @@ public class Shooter extends SubsystemBase implements TeamConstants {
                 Motor1D.Mode.VELOCITY_BASED,
                 DefaultMotorInfo.GOBILDA_6000RPM
         );
-        shooterMotor.setVelocityPIDFCoefficients(1.5,0,0,5);
+//        shooterMotor.setVelocityPIDFCoefficients(1.5,0,0,5);
+        shooterMotor.setVelocityPIDFCoefficients(
+                1.17911653523,
+                0.117911653523,
+                0,
+                11.7911653523
+        );
         register();
     }
 
 
     public void setVelocityRPM(double velocityRPM) {
         shooterMotor.setVelocityRPM(velocityRPM);
+    }
+
+    public double getVelocityRPM() {
+        return shooterMotor.getVelocityRPM();
     }
 
     public void setProportion(double proportion) {

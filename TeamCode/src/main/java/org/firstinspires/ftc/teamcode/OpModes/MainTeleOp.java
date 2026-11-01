@@ -75,14 +75,17 @@ public class MainTeleOp extends CommandOpMode {
 //        operator.getGamepadButton(GamepadKeys.Button.B)
 //                .whenPressed(new InstantCommand(robot.intake::IntakeOut));
         driver.getGamepadButton(GamepadKeys.Button.A)
-                .whenPressed(robot.intake.setVelocityRpmCommand(100))
-                .whenReleased(robot.intake.setVelocityRpmCommand(0));
+                .whenPressed(robot.intake.setPowerCommand(0.75))
+                .whenReleased(robot.intake.setPowerCommand(0));
+        driver.getGamepadButton(GamepadKeys.Button.X)
+                .whenPressed(robot.intake.setPowerCommand(-0.2))
+                .whenReleased(robot.intake.setPowerCommand(0));
 //        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
 //                .whenPressed(() -> robot.shooterMotor.setVelocity(4000));
 //        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
 //                .whenPressed(() -> robot.shooterMotor.setVelocity(0));
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(robot.shooter.setVelocityRpmCommand(4000)) //TODO: Readjust velocity
+                .whenPressed(robot.shooter.setVelocityRpmCommand(3000)) //TODO: Readjust velocity
                 .whenReleased(robot.shooter.setVelocityRpmCommand(0));
 
 
@@ -114,5 +117,9 @@ public class MainTeleOp extends CommandOpMode {
     @Override
     public void run() {
         super.run();
+
+        telemetry.addData("ShooterRPM", robot.shooter.getVelocityRPM());
+        telemetry.addData("IntakeRPM", robot.intake.getVelocityRPM());
+        telemetry.update();
     }
 }
