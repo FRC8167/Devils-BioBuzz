@@ -85,7 +85,7 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
 
         //Register Subsystems
-        register(mecanumDrive);
+        register(mecanumDrive, intake);
 
         if (OP_MODE_TYPE.equals(OpModeType.AUTO)) {
             initHasMovement();

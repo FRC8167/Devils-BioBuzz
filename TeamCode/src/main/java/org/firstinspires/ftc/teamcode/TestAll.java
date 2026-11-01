@@ -25,7 +25,6 @@ public class TestAll extends LinearOpMode {
 
     private IntakeState currentMode = IntakeState.STOPPED;
 
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -36,7 +35,7 @@ public class TestAll extends LinearOpMode {
 
         //Intake
         DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class, "Intake");
-        double fSpeed = 0.75;
+        double fSpeed = 0.8;
         double rSpeed = -0.5;
         double noSpeed = 0.0;
         intakeMotor.setPower(0);
@@ -58,7 +57,7 @@ public class TestAll extends LinearOpMode {
         MotorEx driveMotorRR = new MotorEx(hardwareMap, "RightRear").setCachingTolerance(0.01);
         driveMotorLF.setInverted(true);
         driveMotorLR.setInverted(true);
-        driveMotorRF.setInverted(true);  //changed 10-27
+        driveMotorRF.setInverted(false);  //changed 10-27
         driveMotorRR.setInverted(false);
 
 
