@@ -25,14 +25,14 @@ public class Constants {
         c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
         c.backRightDirection.set(DcMotorSimple.Direction.FORWARD);
 
-        c.manualBrakeMode.set(true);
+        c.manualBrakeMode.set(true); //Note: Not sure what this does but added for now
     });
 
     public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
         c.name.set("pinpoint");
         c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        c.xPodOffset.set(-0.3587657823337345);
-        c.yPodOffset.set(-0.8867398960383858);
+        c.xPodOffset.set(0.0); // AutoTuneVal: -0.3587657823337345 //TODO: Test OnShape values and localizer
+        c.yPodOffset.set(-1.41732); //-36mm // AutoTuneVal: -0.8867398960383858
         c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
         c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
         c.globalDistanceUnit.set(DistanceUnit.INCH);
