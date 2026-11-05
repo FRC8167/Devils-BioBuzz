@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Robot;
 
 //import com.pedropathing.geometry.Pose;
+import com.pedropathing.math.Pose;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.SubSystems.MecanumDrive;
 import org.firstinspires.ftc.teamcode.SubSystems.Motor1D;
 import org.firstinspires.ftc.teamcode.SubSystems.Servo1D;
 import org.firstinspires.ftc.teamcode.SubSystems.Shooter;
+import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 //import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -53,7 +55,7 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
     public Telemetry telemetry;
 
 
-    public static OpModeType OP_MODE_TYPE;
+    public OpModeType OP_MODE_TYPE;
     static List<LynxModule> ctrlHubs;
 
     public GoBildaPinpointDriver pinpoint;
@@ -71,7 +73,9 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
 
 
 
-    public void init(HardwareMap hardwareMap) throws InterruptedException {
+    public void init(HardwareMap hardwareMap, OpModeType opModeType, Pose startPose) throws InterruptedException {
+
+        OP_MODE_TYPE = opModeType;
 
         // Hardware
         MotorEx driveMotorRF = new MotorEx(hardwareMap, "RightFront").setCachingTolerance(0.01); //TODO: update with actual motor types (SolversMotor?)
@@ -119,6 +123,10 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
         intake       = new Intake(hardwareMap.get(DcMotorEx.class, "Intake"));
         shooter      = new Shooter(hardwareMap.get(DcMotorEx.class, "Shooter"));
         gate         = new Gate(hardwareMap.get(Servo.class, "DropServo"));
+
+        follower = Constants.create(hardwareMap);
+        follower.setPose(startPose);
+        follower.update();
 
 
 //        //Register Subsystems

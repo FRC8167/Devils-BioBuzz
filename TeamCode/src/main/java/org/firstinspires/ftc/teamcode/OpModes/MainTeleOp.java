@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.bylazar.telemetry.JoinedTelemetry;
 import com.bylazar.telemetry.PanelsTelemetry;
+import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
@@ -43,14 +44,12 @@ public class MainTeleOp extends CommandOpMode {
     @Override
     public void initialize() {
 
-        // Must-have for all opModes
-        Robot.OP_MODE_TYPE = Robot.OpModeType.TELEOP; //TODO: Implement as init parameter?
         // Resets the command scheduler
         super.reset();
 
         //Initialize the robot
         try {
-            robot.init(hardwareMap);
+            robot.init(hardwareMap, Robot.OpModeType.TELEOP, new Pose(0,0,0));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -117,6 +116,8 @@ public class MainTeleOp extends CommandOpMode {
     @Override
     public void run() {
         super.run();
+
+        robot.follower.update();
 
         telemetry.addData("ShooterRPM", robot.shooter.getVelocityRPM());
         telemetry.addData("IntakeRPM", robot.intake.getVelocityRPM());
