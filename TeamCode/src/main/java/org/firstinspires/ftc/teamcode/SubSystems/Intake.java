@@ -10,7 +10,7 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 import org.firstinspires.ftc.teamcode.Cogintilities.DefaultMotorInfo;
 import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
-public class Intake extends SubsystemBase implements TeamConstants {
+public class Intake extends SubsystemBase {
     private final Motor1D intakeMotor;
 
 

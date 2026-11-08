@@ -9,7 +9,7 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 import org.firstinspires.ftc.teamcode.Cogintilities.DefaultMotorInfo;
 import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
-public class Shooter extends SubsystemBase implements TeamConstants {
+public class Shooter extends SubsystemBase {
     private final Motor1D shooterMotor;
 
 
@@ -49,18 +49,18 @@ public class Shooter extends SubsystemBase implements TeamConstants {
     }
 
     public Command setVelocityRpmCommand(double velocityRPM) {
-        return new SetVelocityRPMCommand(velocityRPM, 10); //TODO: Confirm tolerances
+        return new SetVelocityRPMCommand(velocityRPM, TeamConstants.SHOOTER_DEFAULT_TOLERANCE_RPM); //TODO: Confirm tolerances
     }
 
     public Command setVelocityRpmCommand(double velocityRPM, double timeoutSeconds) {
-        return new SetVelocityRPMCommand(velocityRPM, 10).withTimeout((long) (timeoutSeconds*1000));
+        return setVelocityRpmCommand(velocityRPM).withTimeout((long) (timeoutSeconds*1000));
     }
 
     public Command setVelocityShootCommand() {
-        return setVelocityRpmCommand(3000);
+        return setVelocityRpmCommand(TeamConstants.SHOOTER_SHOOT_RPM);
     }
     public Command setVelocityShootCommand(double timeoutSeconds) {
-        return setVelocityRpmCommand(3000, timeoutSeconds);
+        return setVelocityRpmCommand(TeamConstants.SHOOTER_SHOOT_RPM, timeoutSeconds);
     }
 
     public Command setVelocityStopCommand() {

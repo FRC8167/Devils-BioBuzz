@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.Cogintilities.Color;
 import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
-public class LightRGB extends Servo1D implements TeamConstants {
+public class LightRGB extends Servo1D {
 
     public LightRGB(Servo servo, double initPos, double min, double max) {
         super(servo, initPos, min, max, true);

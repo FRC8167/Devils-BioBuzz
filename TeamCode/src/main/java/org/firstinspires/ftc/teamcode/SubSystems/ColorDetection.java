@@ -7,7 +7,7 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
-public class ColorDetection implements TeamConstants {
+public class ColorDetection {
     private final RevColorSensorV3 colorSensor;
     private final float[] colorHSV;
     private float hue, saturation, value;

@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Cogintilities;
 
 import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
-public enum Color implements TeamConstants {
+public enum Color {
     BLACK (Double.NaN,      "#000000", new RgbValues(0,   0,   0  )),
     RED   (0.279, "#FF0000", new RgbValues(255, 0,   0  )),
     ORANGE(0.333, "#FFA500", new RgbValues(255, 165, 0  )),

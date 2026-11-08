@@ -9,7 +9,7 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
 
-public class Gate extends SubsystemBase implements TeamConstants {
+public class Gate extends SubsystemBase {
     private final Servo1D gateServo;
 
 
@@ -29,30 +29,30 @@ public class Gate extends SubsystemBase implements TeamConstants {
     }
 
     public Command setPositionCommand(double position) {
-        return new SetVelocityRPMCommand(position);
+        return new SetPositionCommand(position);
     }
 
     public Command openGateCommand() {
-        return new SetVelocityRPMCommand(0.1);
+        return new SetPositionCommand(TeamConstants.GATE_OPEN_POSITION);
     }
 
     public Command closeGateCommand() {
-        return new SetVelocityRPMCommand(0);
+        return new SetPositionCommand(TeamConstants.GATE_CLOSED_POSITION);
     }
 
-    public class SetVelocityRPMCommand extends CommandBase {
+    public class SetPositionCommand extends CommandBase {
         private final ElapsedTime timer = new ElapsedTime();
-        private double durationSeconds = 0.2; //TODO: Confirm default duration (or make dynamic)
+        private double durationSeconds = TeamConstants.GATE_DEFAULT_DURATION_SECONDS; //TODO: Confirm default duration (or make dynamic)
 
         private final Gate gate = Gate.this;
         private final double position;
 
-        public SetVelocityRPMCommand(double position) {
+        public SetPositionCommand(double position) {
             this.position = position;
             addRequirements(gate);
         }
 
-        public SetVelocityRPMCommand(double position, double durationSeconds) {
+        public SetPositionCommand(double position, double durationSeconds) {
             this(position);
             this.durationSeconds = durationSeconds;
         }

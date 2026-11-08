@@ -57,7 +57,7 @@ public class TestAuto extends CommandOpMode {
                 new SequentialCommandGroup(
                     robot.shooter.setVelocityShootCommand(),
                     robot.gate.openGateCommand(),
-                    new WaitCommand(300), //Test timing
+                    new WaitCommand(300), //TODO: Test timing
                     robot.intake.setPowerCommand(0.5, 2),
                     new ParallelCommandGroup(
                         robot.gate.closeGateCommand(),
