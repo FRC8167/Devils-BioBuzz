@@ -8,6 +8,7 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.WaitCommand;
@@ -27,7 +28,8 @@ public class TestAuto extends CommandOpMode {
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
     // Poses
-    private final Pose startPose = poseFactory.of(60, 9.92126, 90);
+    private final Pose startPose = poseFactory.of(54.5, 9.92126, 90);
+
 //    private final Pose scorePose = poseFactory.of(48, 48, 90);
     private final Pose controlPose1 = poseFactory.of(60, 24, 90);
     private final Pose controlPose2 = poseFactory.of(24, 24, 90);
@@ -55,13 +57,41 @@ public class TestAuto extends CommandOpMode {
 
         schedule(
                 new SequentialCommandGroup(
+//                    new WaitCommand(0),
+                    new InstantCommand(),
                     robot.shooter.setVelocityShootCommand(),
+
                     robot.gate.openGateCommand(),
                     new WaitCommand(300), //TODO: Test timing
-                    robot.intake.setPowerCommand(0.5, 2),
+                    robot.shooter.setVelocityShootCommand(),
+                    robot.gate.closeGateCommand(),
+
+                    robot.intake.setPowerCommand(0.5, 0.05),
+
+                    new WaitCommand(800),
+                    robot.gate.openGateCommand(),
+                    new WaitCommand(300), //TODO: Test timing
+                    robot.shooter.setVelocityShootCommand(),
+                    robot.gate.closeGateCommand(),
+
+                    robot.intake.setPowerCommand(0.5, 0.4),
+
+                    new WaitCommand(800),
+                    robot.gate.openGateCommand(),
+                    new WaitCommand(300), //TODO: Test timing
+                    robot.shooter.setVelocityShootCommand(),
+                    robot.gate.closeGateCommand(),
+
+                    robot.intake.setPowerCommand(-0.5, 0.1),
+                    robot.intake.setPowerCommand(1, 1),
+
+                    new WaitCommand(800),
+                    robot.gate.openGateCommand(),
+                    new WaitCommand(1000),
+
                     new ParallelCommandGroup(
                         robot.gate.closeGateCommand(),
-                        robot.shooter.setVelocityStopCommand(),
+                        robot.shooter.setVelocityRpmInstantCommand(0),
                         new FollowPathCommand(robot.follower, park())
                     )
                 )
