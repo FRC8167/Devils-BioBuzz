@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.SubSystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.seattlesolvers.solverslib.command.Command;
+import com.seattlesolvers.solverslib.command.CommandBase;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
-import com.seattlesolvers.solverslib.hardware.motors.Motor;
-import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
 import org.firstinspires.ftc.teamcode.Cogintilities.DefaultMotorInfo;
 import org.firstinspires.ftc.teamcode.Robot.TeamConstants;
@@ -53,10 +54,51 @@ public class Intake extends SubsystemBase implements TeamConstants {
 //        );
 //    }
 
-    public InstantCommand setPowerCommand(double power) {
+    public InstantCommand setPowerInstantCommand(double power) {
         return new InstantCommand(
                 () -> intakeMotor.setRawPower(power)
         );
+    }
+
+    public Command setPowerCommand(double power, double durationSeconds) {
+        return new SetPowerDurationCommand(power, durationSeconds);
+    }
+
+    public class SetPowerDurationCommand extends CommandBase {
+        private final ElapsedTime timer = new ElapsedTime();
+        private final double durationSeconds;
+
+        private final Intake intake = Intake.this;
+        private final double power;
+
+        public SetPowerDurationCommand(double power, double durationSeconds) {
+            this.power = power;
+            this.durationSeconds = durationSeconds;
+            addRequirements(intake);
+        }
+
+//        public SetPowerDurationCommand(double power) {
+//            this(power, 1);
+//        }
+
+
+
+        @Override
+        public void initialize() {
+            intake.setPower(power);
+            timer.reset();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return timer.seconds() >= durationSeconds;
+        }
+
+        @Override
+        public void end(boolean interrupted) {
+            intake.setPower(0);
+        }
+
     }
 
 }

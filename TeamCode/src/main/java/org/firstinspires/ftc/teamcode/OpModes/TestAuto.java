@@ -8,7 +8,9 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
+import com.seattlesolvers.solverslib.command.WaitCommand;
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -53,7 +55,15 @@ public class TestAuto extends CommandOpMode {
 
         schedule(
                 new SequentialCommandGroup(
-                    new FollowPathCommand(robot.follower, park())
+                    robot.shooter.setVelocityShootCommand(),
+                    robot.gate.openGateCommand(),
+                    new WaitCommand(300), //Test timing
+                    robot.intake.setPowerCommand(0.5, 2),
+                    new ParallelCommandGroup(
+                        robot.gate.closeGateCommand(),
+                        robot.shooter.setVelocityStopCommand(),
+                        new FollowPathCommand(robot.follower, park())
+                    )
                 )
         );
     }

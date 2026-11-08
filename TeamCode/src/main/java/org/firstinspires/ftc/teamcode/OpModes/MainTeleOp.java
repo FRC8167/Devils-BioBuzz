@@ -10,7 +10,6 @@ import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
-import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 //import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -74,11 +73,11 @@ public class MainTeleOp extends CommandOpMode {
 //        operator.getGamepadButton(GamepadKeys.Button.B)
 //                .whenPressed(new InstantCommand(robot.intake::IntakeOut));
         driver.getGamepadButton(GamepadKeys.Button.A)
-                .whenPressed(robot.intake.setPowerCommand(0.75))
-                .whenReleased(robot.intake.setPowerCommand(0));
+                .whenPressed(robot.intake.setPowerInstantCommand(0.75))
+                .whenReleased(robot.intake.setPowerInstantCommand(0));
         driver.getGamepadButton(GamepadKeys.Button.X)
-                .whenPressed(robot.intake.setPowerCommand(-0.2))
-                .whenReleased(robot.intake.setPowerCommand(0));
+                .whenPressed(robot.intake.setPowerInstantCommand(-0.2))
+                .whenReleased(robot.intake.setPowerInstantCommand(0));
 //        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
 //                .whenPressed(() -> robot.shooterMotor.setVelocity(4000));
 //        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
