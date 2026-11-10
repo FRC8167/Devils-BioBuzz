@@ -96,8 +96,8 @@ public class MainTeleOp extends CommandOpMode {
         //******DRIVER CONTROLS*****
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whenPressed(new InstantCommand(robot.mecanumDrive::enableSnailDrive))
-                .whenReleased(new InstantCommand(robot.mecanumDrive::disableSnailDrive));
+                .whenPressed(robot.mecanumDrive::enableSnailDrive)
+                .whenReleased(robot.mecanumDrive::disableSnailDrive);
 
         //must be HELD DOWN to hold the position
         //operator can still use anything

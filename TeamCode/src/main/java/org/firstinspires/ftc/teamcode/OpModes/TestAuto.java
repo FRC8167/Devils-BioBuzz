@@ -62,7 +62,7 @@ public class TestAuto extends CommandOpMode {
                     robot.shooter.setVelocityShootCommand(),
 
                     robot.gate.openGateCommand(),
-                    new WaitCommand(300), //TODO: Test timing
+                    new WaitCommand(300),
                     robot.shooter.setVelocityShootCommand(),
                     robot.gate.closeGateCommand(),
 
@@ -70,7 +70,7 @@ public class TestAuto extends CommandOpMode {
 
                     new WaitCommand(800),
                     robot.gate.openGateCommand(),
-                    new WaitCommand(300), //TODO: Test timing
+                    new WaitCommand(300),
                     robot.shooter.setVelocityShootCommand(),
                     robot.gate.closeGateCommand(),
 
@@ -78,7 +78,7 @@ public class TestAuto extends CommandOpMode {
 
                     new WaitCommand(800),
                     robot.gate.openGateCommand(),
-                    new WaitCommand(300), //TODO: Test timing
+                    new WaitCommand(300),
                     robot.shooter.setVelocityShootCommand(),
                     robot.gate.closeGateCommand(),
 
