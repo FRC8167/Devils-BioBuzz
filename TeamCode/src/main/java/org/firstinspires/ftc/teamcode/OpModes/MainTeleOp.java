@@ -72,22 +72,26 @@ public class MainTeleOp extends CommandOpMode {
 //
 //        operator.getGamepadButton(GamepadKeys.Button.B)
 //                .whenPressed(new InstantCommand(robot.intake::IntakeOut));
-        driver.getGamepadButton(GamepadKeys.Button.A)
+        operator.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(robot.intake.setPowerInstantCommand(0.75))
                 .whenReleased(robot.intake.setPowerInstantCommand(0));
-        driver.getGamepadButton(GamepadKeys.Button.X)
+        operator.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(robot.intake.setPowerInstantCommand(-0.2))
                 .whenReleased(robot.intake.setPowerInstantCommand(0));
 //        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
 //                .whenPressed(() -> robot.shooterMotor.setVelocity(4000));
 //        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
 //                .whenPressed(() -> robot.shooterMotor.setVelocity(0));
-        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(robot.shooter.setVelocityRpmCommand(3000)) //TODO: Readjust velocity
+        operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(robot.shooter.setVelocityRpmCommand(3000))
+                .whenReleased(robot.shooter.setVelocityRpmCommand(0));
+
+        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(robot.shooter.setVelocityRpmCommand(-3000))
                 .whenReleased(robot.shooter.setVelocityRpmCommand(0));
 
 
-        driver.getGamepadButton(GamepadKeys.Button.B)
+        operator.getGamepadButton(GamepadKeys.Button.B)
                 .whenPressed(robot.gate.setPositionCommand(0.1))
                 .whenReleased(robot.gate.setPositionCommand(0));
 
