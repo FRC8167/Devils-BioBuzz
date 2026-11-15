@@ -17,7 +17,7 @@ import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot.Robot;
 
-@Autonomous(name = "TestAuto")
+@Autonomous(name = "TestAuto", group = "Competition", preselectTeleOp = "MainTeleOp")
 public class TestAuto extends CommandOpMode {
 
     private final Robot robot =   Robot.getInstance();

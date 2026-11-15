@@ -72,7 +72,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public boolean closeEnough() {
-        return Math.abs(getVelocityRPM() - getTargetVelocityRPM()) < 50; //Note: tolerance set higher for gamepad rumble
+        return getVelocityRPM() - getTargetVelocityRPM() > -50; //Note: tolerance set higher for gamepad rumble
     }
 
 

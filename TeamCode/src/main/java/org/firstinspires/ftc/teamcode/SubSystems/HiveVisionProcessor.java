@@ -36,15 +36,18 @@ public class HiveVisionProcessor {
         }
     }
 
-    private static final double METERS_TO_INCHES = 39.3700787;
+    private static final double METERS_TO_INCHES = 39.37007874015748;
     private static final double HIVE_SPACING_X = 25.5; // Center-to-center distance between Red and Blue shafts
     private static final double RED_SHAFT_FIELD_X = -(HIVE_SPACING_X / 2.0); // -12.75 in
     private static final double BLUE_SHAFT_FIELD_X = (HIVE_SPACING_X / 2.0);  // +12.75 in
     private static final double TOWER_FIELD_Y = 0.00;
     private static final double TOWER_SHAFT_FIELD_ANGLE_RAD = Math.PI / 2.0;  // Shafts run parallel to Y-Axis
 
-    private static final double HORIZONTAL_DISTANCE = 18.84 - 9.938;         // ~8.902 in
-    private static final double VERTICAL_DROP         = 43.95 - 42.451532;     // ~1.498 in
+    private static final double HORIZONTAL_DISTANCE = 42.91/2 - 9.938 + 2.75;         // ~14.267 in
+    private static final double PIVOT_HEIGHT        = 43.95;
+    private static final double VERTICAL_DROP       = PIVOT_HEIGHT - 42.451532;     // ~1.498 in
+
+    private static final double HIVE_PIVOT_OFFSET_ANGLE_DEG = Math.toDegrees(Math.atan2(VERTICAL_DROP, HORIZONTAL_DISTANCE)); //~5.9958 deg
 
     private static final double TARGET_STATE_MAGNITUDE = 30.0;
     private static final double STATE_TOLERANCE = 8.0;
@@ -59,24 +62,25 @@ public class HiveVisionProcessor {
 
     public HiveVisionProcessor() {
         // --- RED HIVE CONFIGURATION (IDs 30-37) ---
-        tagMap.put(30, new HiveConfig(HiveColor.RED, false,  10.0, RED_SHAFT_FIELD_X));
-        tagMap.put(31, new HiveConfig(HiveColor.RED, false,   3.5, RED_SHAFT_FIELD_X));
-        tagMap.put(32, new HiveConfig(HiveColor.RED, false,  -3.5, RED_SHAFT_FIELD_X));
-        tagMap.put(33, new HiveConfig(HiveColor.RED, false, -10.0, RED_SHAFT_FIELD_X));
-        tagMap.put(34, new HiveConfig(HiveColor.RED, true,  -10.0, RED_SHAFT_FIELD_X));
-        tagMap.put(35, new HiveConfig(HiveColor.RED, true,   -3.5, RED_SHAFT_FIELD_X));
-        tagMap.put(36, new HiveConfig(HiveColor.RED, true,    3.5, RED_SHAFT_FIELD_X));
-        tagMap.put(37, new HiveConfig(HiveColor.RED, true,   10.0, RED_SHAFT_FIELD_X));
+        //Note: Opposite was referring to the +y side (for some bs reason)
+        tagMap.put(30, new HiveConfig(HiveColor.RED, false,  6.5, RED_SHAFT_FIELD_X));
+        tagMap.put(31, new HiveConfig(HiveColor.RED, false,   2.75, RED_SHAFT_FIELD_X));
+        tagMap.put(32, new HiveConfig(HiveColor.RED, false,  -2.75, RED_SHAFT_FIELD_X));
+        tagMap.put(33, new HiveConfig(HiveColor.RED, false, -6.5, RED_SHAFT_FIELD_X));
+        tagMap.put(34, new HiveConfig(HiveColor.RED, true,  -6.5, RED_SHAFT_FIELD_X));
+        tagMap.put(35, new HiveConfig(HiveColor.RED, true,   -2.75, RED_SHAFT_FIELD_X));
+        tagMap.put(36, new HiveConfig(HiveColor.RED, true,    2.75, RED_SHAFT_FIELD_X));
+        tagMap.put(37, new HiveConfig(HiveColor.RED, true,   6.5, RED_SHAFT_FIELD_X));
 
         // --- BLUE HIVE CONFIGURATION (IDs 38-45) ---
-        tagMap.put(38, new HiveConfig(HiveColor.BLUE, true, -10.0, BLUE_SHAFT_FIELD_X));
-        tagMap.put(39, new HiveConfig(HiveColor.BLUE, true,  -3.5, BLUE_SHAFT_FIELD_X));
-        tagMap.put(40, new HiveConfig(HiveColor.BLUE, true,   3.5, BLUE_SHAFT_FIELD_X));
-        tagMap.put(41, new HiveConfig(HiveColor.BLUE, true,  10.0, BLUE_SHAFT_FIELD_X));
-        tagMap.put(42, new HiveConfig(HiveColor.BLUE, false, 10.0, BLUE_SHAFT_FIELD_X));
-        tagMap.put(43, new HiveConfig(HiveColor.BLUE, false,  3.5, BLUE_SHAFT_FIELD_X));
-        tagMap.put(44, new HiveConfig(HiveColor.BLUE, false, -3.5, BLUE_SHAFT_FIELD_X));
-        tagMap.put(45, new HiveConfig(HiveColor.BLUE, false,-10.0, BLUE_SHAFT_FIELD_X));
+        tagMap.put(38, new HiveConfig(HiveColor.BLUE, true, -6.5, BLUE_SHAFT_FIELD_X));
+        tagMap.put(39, new HiveConfig(HiveColor.BLUE, true,  -2.75, BLUE_SHAFT_FIELD_X));
+        tagMap.put(40, new HiveConfig(HiveColor.BLUE, true,   2.75, BLUE_SHAFT_FIELD_X));
+        tagMap.put(41, new HiveConfig(HiveColor.BLUE, true,  6.5, BLUE_SHAFT_FIELD_X));
+        tagMap.put(42, new HiveConfig(HiveColor.BLUE, false, 6.5, BLUE_SHAFT_FIELD_X));
+        tagMap.put(43, new HiveConfig(HiveColor.BLUE, false,  2.75, BLUE_SHAFT_FIELD_X));
+        tagMap.put(44, new HiveConfig(HiveColor.BLUE, false, -2.75, BLUE_SHAFT_FIELD_X));
+        tagMap.put(45, new HiveConfig(HiveColor.BLUE, false,-6.5, BLUE_SHAFT_FIELD_X));
     }
 
     /**
@@ -94,10 +98,15 @@ public class HiveVisionProcessor {
             HiveConfig cfg = tagMap.get(f.getFiducialId());
             if (cfg == null) continue;
 
-            double rawPitch = f.getTargetPoseRobotSpace().getOrientation().getPitch();
-            double normalizedAngle = cfg.isOppositeFace ? -rawPitch : rawPitch;
+//            double rawPitch = f.getTargetPoseRobotSpace().getOrientation().getPitch();
+            double heightAbovePivot = f.getTargetPoseRobotSpace().getPosition().z - PIVOT_HEIGHT;
+            double tagAngle = Math.toDegrees(Math.asin(heightAbovePivot/HORIZONTAL_DISTANCE));
+            double hiveAngle = tagAngle + HIVE_PIVOT_OFFSET_ANGLE_DEG;
 
-            if (normalizedAngle >= -60.0 && normalizedAngle <= 60.0) {
+            double normalizedAngle = cfg.isOppositeFace ? -hiveAngle : hiveAngle;
+            //TODO: Continue editing
+
+            if (normalizedAngle >= -60.0 && normalizedAngle <= 60.0) { //Don't know why its [-60,60]
                 if (cfg.color == HiveColor.RED) {
                     redVisibleTags.add(f);
                     redNormalizedAngles.add(normalizedAngle);
@@ -111,8 +120,8 @@ public class HiveVisionProcessor {
         double redAvgAngle  = redNormalizedAngles.stream().mapToDouble(a -> a).average().orElse(Double.NaN);
         double blueAvgAngle = blueNormalizedAngles.stream().mapToDouble(a -> a).average().orElse(Double.NaN);
 
-        if (!Double.isNaN(redAvgAngle)) updateRedState(resolveHiveState(redAvgAngle));
-        if (!Double.isNaN(blueAvgAngle)) updateBlueState(resolveHiveState(blueAvgAngle));
+        if (!Double.isNaN(redAvgAngle)) updateRedState(resolveHiveStateRed(redAvgAngle));
+        if (!Double.isNaN(blueAvgAngle)) updateBlueState(resolveHiveStateBlue(blueAvgAngle));
 
         if (redVisibleTags.size() >= 2) {
             calculatePoseFromShaft(redVisibleTags, redAvgAngle, RED_SHAFT_FIELD_X);
@@ -233,7 +242,7 @@ public class HiveVisionProcessor {
     }
 
     private double evaluateSignedAngle(double rawAngle) {
-        HiveState state = resolveHiveState(rawAngle);
+        HiveState state = resolveHiveStateRed(rawAngle); //Default
         if (state == HiveState.REVERSED_TIPPED) {
             return -TARGET_STATE_MAGNITUDE;
         } else if (state == HiveState.STARTING) {
@@ -242,9 +251,16 @@ public class HiveVisionProcessor {
         return rawAngle;
     }
 
-    public HiveState resolveHiveState(double angleDeg) {
+    public HiveState resolveHiveStateRed(double angleDeg) {
         if (Math.abs(Math.abs(angleDeg) - TARGET_STATE_MAGNITUDE) <= STATE_TOLERANCE) {
             return (angleDeg < 0) ? HiveState.REVERSED_TIPPED : HiveState.STARTING;
+        }
+        return HiveState.IN_BETWEEN_MOVING;
+    }
+
+    public HiveState resolveHiveStateBlue(double angleDeg) {
+        if (Math.abs(Math.abs(angleDeg) - TARGET_STATE_MAGNITUDE) <= STATE_TOLERANCE) {
+            return (angleDeg < 0) ? HiveState.STARTING : HiveState.REVERSED_TIPPED;
         }
         return HiveState.IN_BETWEEN_MOVING;
     }
