@@ -38,6 +38,10 @@ public class Shooter extends SubsystemBase {
         return shooterMotor.getVelocityRPM();
     }
 
+    public double getTargetVelocityRPM() {
+        return shooterMotor.getTargetVelocityRPM();
+    }
+
     public void setProportion(double proportion) {
         shooterMotor.setVelocityFractional(proportion);
     }
@@ -65,6 +69,10 @@ public class Shooter extends SubsystemBase {
 
     public Command setVelocityStopCommand() {
         return setVelocityRpmCommand(0);
+    }
+
+    public boolean closeEnough() {
+        return Math.abs(getVelocityRPM() - getTargetVelocityRPM()) < 50; //Note: tolerance set higher for gamepad rumble
     }
 
 

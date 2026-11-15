@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
 
+import com.bylazar.panels.Panels;
+import com.bylazar.panels.PanelsConfig;
 import com.bylazar.telemetry.JoinedTelemetry;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
@@ -27,13 +30,9 @@ public class MainTeleOp extends CommandOpMode {
     private final Robot robot =   Robot.getInstance();
 //    static TelemetryManager telemetryM;
 
-    Telemetry dsTelemetry     = telemetry;
-    Telemetry panelsTelemetry = PanelsTelemetry.INSTANCE.getFtcTelemetry();
-    Telemetry joinedTelemetry = new JoinedTelemetry(panelsTelemetry, dsTelemetry);
-
-
-    public static double current_velocity = 3200;
-    public double increment = 25;
+    Telemetry dsTelemetry;
+    Telemetry panelsTelemetry;
+    Telemetry joinedTelemetry;
 
 
 //    private Pose startPose;
@@ -42,6 +41,13 @@ public class MainTeleOp extends CommandOpMode {
 
     @Override
     public void initialize() {
+
+//        Panels.INSTANCE.disable();
+
+//        dsTelemetry     = telemetry;
+//        panelsTelemetry = PanelsTelemetry.INSTANCE.getFtcTelemetry();
+//        joinedTelemetry = new JoinedTelemetry(panelsTelemetry, dsTelemetry);
+//        telemetry       = joinedTelemetry;
 
         // Resets the command scheduler
         super.reset();
@@ -52,8 +58,6 @@ public class MainTeleOp extends CommandOpMode {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        telemetry = joinedTelemetry;
 
 
 //        robot.mecanumDrive.setDefaultCommand(robot.mecanumDrive.new DriveCommand(gamepad1));
@@ -78,6 +82,14 @@ public class MainTeleOp extends CommandOpMode {
         operator.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(robot.intake.setPowerInstantCommand(-0.2))
                 .whenReleased(robot.intake.setPowerInstantCommand(0));
+
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+                .whenPressed(robot.intake.setPowerInstantCommand(1))
+                .whenReleased(robot.intake.setPowerInstantCommand(0));
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+                .whenPressed(robot.intake.setPowerInstantCommand(-1))
+                .whenReleased(robot.intake.setPowerInstantCommand(0));
+
 //        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
 //                .whenPressed(() -> robot.shooterMotor.setVelocity(4000));
 //        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
@@ -125,5 +137,9 @@ public class MainTeleOp extends CommandOpMode {
         telemetry.addData("ShooterRPM", robot.shooter.getVelocityRPM());
         telemetry.addData("IntakeRPM", robot.intake.getVelocityRPM());
         telemetry.update();
+
+        if (robot.shooter.getTargetVelocityRPM() > 0 && !robot.shooter.closeEnough())
+            gamepad2.rumble(Gamepad.RUMBLE_DURATION_CONTINUOUS);
+        else gamepad2.stopRumble();
     }
 }
