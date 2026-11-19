@@ -1,20 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
-import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
-import com.seattlesolvers.solverslib.command.RunCommand;
-import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
-import com.seattlesolvers.solverslib.command.WaitCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.Robot.Robot;
 
 
 //@Disabled
@@ -40,7 +35,7 @@ public class MainTeleOp extends CommandOpMode {
     public void initialize() {
 
         // Must have for all opModes
-//        Robot.OP_MODE_TYPE = Robot.OpModeType.TELEOP;
+        Robot.OP_MODE_TYPE = Robot.OpModeType.TELEOP;
         // Resets the command scheduler
         super.reset();
 
@@ -54,8 +49,6 @@ public class MainTeleOp extends CommandOpMode {
 
         robot.mecanumDrive.setDefaultCommand(new DriveCommand(robot.mecanumDrive, gamepad1));
 
-
-
         driver = new GamepadEx(gamepad1);
         operator = new GamepadEx(gamepad2);
 
@@ -64,16 +57,22 @@ public class MainTeleOp extends CommandOpMode {
 
 
         operator.getGamepadButton(GamepadKeys.Button.A)
-                .whenPressed(new InstantCommand(robot.intake::intakeOn));
+                .whenPressed(new InstantCommand(robot.intake::forward));
 
         operator.getGamepadButton(GamepadKeys.Button.B)
                 .whenPressed(new InstantCommand(robot.intake::reverse));
 
+        operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(robot.pollenShooter.setVelocityRpmCommand(3000)) //TODO: Readjust velocity
+                .whenReleased(robot.pollenShooter.setVelocityRpmCommand(0));
 
+        operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(robot.nectarShooter.setVelocityRpmCommand(3000)) //TODO: Readjust velocity
+                .whenReleased(robot.nectarShooter.setVelocityRpmCommand(0));
 
         //******DRIVER CONTROLS*****
 
-        driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+        driver.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(new InstantCommand(robot.mecanumDrive::enableSnailDrive))
                 .whenReleased(new InstantCommand(robot.mecanumDrive::disableSnailDrive));
 

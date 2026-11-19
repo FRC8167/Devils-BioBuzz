@@ -1,24 +1,25 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Robot;
 
 //import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.seattlesolvers.solverslib.hardware.SensorColor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 //import org.firstinspires.ftc.teamcode.Cogintilities.MirrorUtility;
 
+import org.firstinspires.ftc.teamcode.SubSystems.Gate;
 import org.firstinspires.ftc.teamcode.SubSystems.Intake;
 
 import org.firstinspires.ftc.teamcode.SubSystems.MecanumDrive;
+import org.firstinspires.ftc.teamcode.SubSystems.NectarShooter;
+import org.firstinspires.ftc.teamcode.SubSystems.PollenShooter;
 
 
 import com.pedropathing.follower.Follower;
-import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
 
 import java.util.List;
@@ -57,6 +58,10 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
     public Follower follower;
     public MecanumDrive mecanumDrive;
     public Intake intake;
+    public PollenShooter pollenShooter;
+    public NectarShooter nectarShooter;
+    public Gate gate;
+    //public Servo1D flowerPicker;
 
 
 
@@ -82,10 +87,13 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
         //Instantiate Subsystems
         mecanumDrive = new MecanumDrive(driveMotorLF, driveMotorLR, driveMotorRF, driveMotorRR);
         intake  = new Intake(intakeMotor);
+        pollenShooter      = new PollenShooter(hardwareMap.get(DcMotorEx.class, "PollenShooter"));
+        nectarShooter      = new NectarShooter(hardwareMap.get(DcMotorEx.class, "NectarShooter"));
+        //gate         = new Gate(hardwareMap.get(Servo.class, "DropServo"));
 
 
         //Register Subsystems
-        register(mecanumDrive, intake);
+        register(mecanumDrive, intake, pollenShooter, nectarShooter);
 
         if (OP_MODE_TYPE.equals(OpModeType.AUTO)) {
             initHasMovement();

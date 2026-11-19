@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
+import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
-import org.firstinspires.ftc.teamcode.Cogintilities.DefaultMotorInfo;
-import org.firstinspires.ftc.teamcode.Cogintilities.MotorInformation;
 
 
 @TeleOp(name = "TestAll")
@@ -29,26 +29,49 @@ public class TestAll extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         //Flower Tube Wheel
-        CRServo intakeServoR = hardwareMap.get(CRServo.class, "intakeServoR");
-        intakeServoR.setDirection(DcMotorSimple.Direction.FORWARD);
-        double speed = 1;
+//        CRServo intakeServoR = hardwareMap.get(CRServo.class, "intakeServoR");
+//        intakeServoR.setDirection(DcMotorSimple.Direction.FORWARD);
+//        double speed = 1;
+
+        Servo pollenGate = hardwareMap.get(Servo.class, "pollenGate");
+        // nectarGate = hardwareMap.get(Servo.class, "nectarGate");
 
         //Intake
-        DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class, "Intake");
-        double fSpeed = 0.8;
+        DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class, "intake");
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        double fSpeed = 1.0;
         double rSpeed = -0.5;
         double noSpeed = 0.0;
         intakeMotor.setPower(0);
 
         //Shooter
-        DcMotorEx shooterMotor = hardwareMap.get(DcMotorEx.class, "Shooter");
-        double shooterSpeed;
-        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        shooterMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        shooterMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        MotorInformation.adjustMotor(shooterMotor, DefaultMotorInfo.GOBILDA_6000RPM);
+        DcMotorEx nectarShooterMotor = hardwareMap.get(DcMotorEx.class, "nectarShooter");
+        DcMotorEx pollenShooterMotor = hardwareMap.get(DcMotorEx.class, "pollenShooter");
+        nectarShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        nectarShooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        nectarShooterMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        nectarShooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        shooterMotor.setPower(0);
+
+        pollenShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        pollenShooterMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        pollenShooterMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        pollenShooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+//        pollenShooterMotor.setVelocityPIDFCoefficients(2, 0.5, 0, 13);
+//        nectarShooterMotor.setVelocityPIDFCoefficients(2, 0.5, 0, 13);
+        pollenShooterMotor.setVelocityPIDFCoefficients(2, 0, 0, 13);
+        nectarShooterMotor.setVelocityPIDFCoefficients(2, 0, 0, 13);
+
+
+        pollenShooterMotor.setPower(0);
+        nectarShooterMotor.setPower(0);
+        double pollenRPM = 0;
+        double nectarRPM = 0;
+        double targetPollenRPM = 3000;
+        double targetNectarRPM = 3000;
+
 
         //Drivetrain
         MotorEx driveMotorRF = new MotorEx(hardwareMap, "RightFront").setCachingTolerance(0.01);
@@ -77,31 +100,67 @@ public class TestAll extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             //Change input states according to gamepad buttons pressed
-            if (gamepad2.right_bumper) {
-                intakeServoR.setPower(speed);
-            } else if (gamepad2.left_bumper) {
-                intakeServoR.setPower(-speed);
-            } else {
-                intakeServoR.setPower(0);
+//            if (gamepad2.rightTriggerWasPressed()) {
+//                nectarGate.setPosition(0.2);
+//            }
+//            if (gamepad2.rightTriggerWasReleased()) {
+//                nectarGate.setPosition(0.0);
+//            }
+            if (gamepad2.leftTriggerWasPressed()) {
+                pollenGate.setPosition(0.4);
+            } if (gamepad2.leftTriggerWasReleased()) {
+                pollenGate.setPosition(0.0);
             }
-            if (gamepad1.aWasPressed()) {
+            if (gamepad2.aWasPressed()) {
                 if (currentMode == IntakeState.FORWARD) {
                     currentMode = IntakeState.STOPPED; // If already running forward, stop it
                 } else {
                     currentMode = IntakeState.FORWARD; // Otherwise, turn it forward
                 }
             }
-            else if (gamepad1.bWasPressed()) {
+            else if (gamepad2.bWasPressed()) {
                 if (currentMode == IntakeState.REVERSE) {
                     currentMode = IntakeState.STOPPED; // If already reversing, stop it
                 } else {
                     currentMode = IntakeState.REVERSE; // Otherwise, turn it to reverse
                 }
             }
-            shooterSpeed = -gamepad2.right_stick_y;
-            shooterMotor.setPower(shooterSpeed);
 
-            telemetry.addData("Speed", speed);
+            double maxRPM = 5500; // capped below 6000 RPM max
+
+            if (gamepad2.rightBumperWasPressed()) {
+                pollenRPM = Math.min(maxRPM, pollenRPM + 500);
+                pollenShooterMotor.setVelocity(pollenRPM / 60.0 * 28.0);
+            }
+
+            if (gamepad2.leftBumperWasPressed()) {
+                pollenRPM = Math.max(0, pollenRPM - 500);
+                pollenShooterMotor.setVelocity(pollenRPM / 60.0 * 28.0);
+            }
+
+            if (gamepad2.dpadUpWasPressed()) {
+                nectarRPM = Math.min(maxRPM, nectarRPM + 500);
+                nectarShooterMotor.setVelocity(nectarRPM / 60.0 * 28.0);
+            }
+
+            if (gamepad2.dpadDownWasPressed()) {
+                nectarRPM = Math.max(0, nectarRPM - 500);
+                nectarShooterMotor.setVelocity(nectarRPM / 60.0 * 28.0);
+            }
+
+            if (gamepad2.xWasPressed()) {
+                pollenRPM = 0;
+                nectarRPM = 0;
+                pollenShooterMotor.setVelocity(0);
+                nectarShooterMotor.setVelocity(0);
+            }
+
+
+            telemetry.addData("Pollen Target RPM", pollenRPM);
+            telemetry.addData("Pollen Actual RPM", pollenShooterMotor.getVelocity() / 28.0 * 60.0);
+
+            telemetry.addData("Nectar Target RPM", nectarRPM);
+            telemetry.addData("Nectar Actual RPM", nectarShooterMotor.getVelocity() / 28.0 * 60.0);
             telemetry.update();
             double drive = -gamepad1.left_stick_y;
             double strafe = gamepad1.left_stick_x * 1.1;
@@ -125,7 +184,6 @@ public class TestAll extends LinearOpMode {
             } else {
                 intakeMotor.setPower(noSpeed);
             }
-
 
 
             driveMotorRF.set(frontRightPower);
