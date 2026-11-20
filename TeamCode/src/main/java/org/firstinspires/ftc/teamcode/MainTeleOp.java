@@ -21,10 +21,6 @@ public class MainTeleOp extends CommandOpMode {
     public ElapsedTime timer;
     private final Robot robot =   Robot.getInstance();
 //    static TelemetryManager telemetryM;
-
-
-
-
 //    private Pose startPose;
 //    private Pose autoEndPose;
 
@@ -53,8 +49,6 @@ public class MainTeleOp extends CommandOpMode {
 
 
         //******OPERATOR CONTROLS*****
-
-
         operator.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(new InstantCommand(robot.intake::forward));
 
@@ -81,9 +75,6 @@ public class MainTeleOp extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(new InstantCommand(robot.mecanumDrive::enableSnailDrive))
                 .whenReleased(new InstantCommand(robot.mecanumDrive::disableSnailDrive));
-
-
-
     }
 
     @Override

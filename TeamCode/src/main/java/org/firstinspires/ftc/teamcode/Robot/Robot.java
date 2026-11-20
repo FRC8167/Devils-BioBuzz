@@ -10,6 +10,8 @@ import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 //import org.firstinspires.ftc.teamcode.Cogintilities.MirrorUtility;
+import com.pedropathing.follower.Follower;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import org.firstinspires.ftc.teamcode.SubSystems.PollenGate;
 import org.firstinspires.ftc.teamcode.SubSystems.Intake;
@@ -77,7 +79,10 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
         DcMotorEx nectarShooterMotor = hardwareMap.get(DcMotorEx.class, "NectarShooter");
         Servo pollenGateServo = hardwareMap.get(Servo.class, "pollenGate");
 
-//        follower = Constants.createFollower(hardwareMap);
+//Placeholder when adding auto later
+//        follower = Constants.create(hardwareMap);
+//        follower.setPose(startPose);
+//        follower.update();
 
         ctrlHubs = hardwareMap.getAll(LynxModule.class);
         for (LynxModule hub : ctrlHubs) {

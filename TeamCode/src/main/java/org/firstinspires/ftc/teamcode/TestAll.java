@@ -10,9 +10,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
+import com.bylazar.configurables.annotations.Configurable;
 
-
-
+@Configurable
 @TeleOp(name = "TestAll")
 public class TestAll extends LinearOpMode {
 
@@ -24,6 +26,12 @@ public class TestAll extends LinearOpMode {
     }
 
     private IntakeState currentMode = IntakeState.STOPPED;
+
+    private TelemetryManager panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
+    public static double kP = 0.0;
+    public static double kI = 0.0;
+    public static double kD = 0.0;
+    public static double kF = 0.0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -40,7 +48,7 @@ public class TestAll extends LinearOpMode {
         //Intake
         DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class, "intake");
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        double fSpeed = 1.0;
+        double fSpeed = 0.8;
         double rSpeed = -0.5;
         double noSpeed = 0.0;
         intakeMotor.setPower(0);
@@ -62,7 +70,8 @@ public class TestAll extends LinearOpMode {
 
 //        pollenShooterMotor.setVelocityPIDFCoefficients(2, 0.5, 0, 13);
 //        nectarShooterMotor.setVelocityPIDFCoefficients(2, 0.5, 0, 13);
-        pollenShooterMotor.setVelocityPIDFCoefficients(2, 0, 0, 13);
+        double lastP = kP, lastI = kI, lastD = kD, lastF = kF;
+        pollenShooterMotor.setVelocityPIDFCoefficients(kP, kI, kD, kF);
         nectarShooterMotor.setVelocityPIDFCoefficients(2, 0, 0, 13);
 
 
@@ -107,9 +116,17 @@ public class TestAll extends LinearOpMode {
 //            if (gamepad2.rightTriggerWasReleased()) {
 //                nectarGate.setPosition(0.0);
 //            }
-            if (gamepad2.leftTriggerWasPressed()) {
+            if (kP != lastP || kI != lastI || kD != lastD || kF != lastF) {
+                pollenShooterMotor.setVelocityPIDFCoefficients(kP, kI, kD, kF);
+                lastP = kP;
+                lastI = kI;
+                lastD = kD;
+                lastF = kF;
+            }
+
+            if (gamepad2.backWasPressed()) {
                 pollenGate.setPosition(0.0);
-            } if (gamepad2.leftTriggerWasReleased()) {
+            } if (gamepad2.backWasReleased()) {
                 pollenGate.setPosition(0.4);
             }
             if (gamepad2.aWasPressed()) {
@@ -159,7 +176,7 @@ public class TestAll extends LinearOpMode {
 
             telemetry.addData("Pollen Target RPM", pollenRPM);
             telemetry.addData("Pollen Actual RPM", pollenShooterMotor.getVelocity() / 28.0 * 60.0);
-
+            telemetry.addData("Encoder counts:  ", pollenShooterMotor.getCurrentPosition());
             telemetry.addData("Nectar Target RPM", nectarRPM);
             telemetry.addData("Nectar Actual RPM", nectarShooterMotor.getVelocity() / 28.0 * 60.0);
             telemetry.update();
@@ -191,6 +208,11 @@ public class TestAll extends LinearOpMode {
             driveMotorLF.set(frontLeftPower);
             driveMotorRR.set(backRightPower);
             driveMotorLR.set(backLeftPower);
+
+
+            panelsTelemetry.addData("Pollen Target RPM", pollenRPM);
+            panelsTelemetry.addData("Pollen Actual RPM", pollenShooterMotor.getVelocity() / 28.0 * 60.0);
+            panelsTelemetry.update();
 
         }
     }
