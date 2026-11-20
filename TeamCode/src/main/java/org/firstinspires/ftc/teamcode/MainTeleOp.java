@@ -23,8 +23,6 @@ public class MainTeleOp extends CommandOpMode {
 //    static TelemetryManager telemetryM;
 
 
-    public static double current_velocity = 3200;
-    public double increment = 25;
 
 
 //    private Pose startPose;
@@ -36,6 +34,7 @@ public class MainTeleOp extends CommandOpMode {
 
         // Must have for all opModes
         Robot.OP_MODE_TYPE = Robot.OpModeType.TELEOP;
+        robot.pollenGate.setPosition(0.4);
         // Resets the command scheduler
         super.reset();
 
@@ -63,12 +62,19 @@ public class MainTeleOp extends CommandOpMode {
                 .whenPressed(new InstantCommand(robot.intake::reverse));
 
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(robot.pollenShooter.setVelocityRpmCommand(3000)) //TODO: Readjust velocity
-                .whenReleased(robot.pollenShooter.setVelocityRpmCommand(0));
+                .whenPressed(new InstantCommand(() -> robot.pollenShooter.setMotorSpeed(3000), robot.pollenShooter))
+                .whenReleased(new InstantCommand(() -> robot.pollenShooter.setMotorSpeed(0), robot.pollenShooter));
 
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whenPressed(robot.nectarShooter.setVelocityRpmCommand(3000)) //TODO: Readjust velocity
-                .whenReleased(robot.nectarShooter.setVelocityRpmCommand(0));
+                .whenPressed(new InstantCommand(() -> robot.nectarShooter.setMotorSpeed(3000), robot.nectarShooter))
+                .whenReleased(new InstantCommand(() -> robot.nectarShooter.setMotorSpeed(0), robot.nectarShooter));
+
+        if (operator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) {
+            robot.pollenGate.setPosition(0.4);
+        } else {
+            robot.pollenGate.setPosition(0.0);
+        }
+
 
         //******DRIVER CONTROLS*****
 
@@ -76,16 +82,7 @@ public class MainTeleOp extends CommandOpMode {
                 .whenPressed(new InstantCommand(robot.mecanumDrive::enableSnailDrive))
                 .whenReleased(new InstantCommand(robot.mecanumDrive::disableSnailDrive));
 
-        //must be HELD DOWN to hold the position
-        //operator can still use anything
-        //once driver releases and moves joystick, the hold ends
 
-
-        //driver-assisted shoot commands
-
-
-//        driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
-//            new InstantCommand(()-> robot.shooter.setVelocity(current_velocity)));
 
     }
 

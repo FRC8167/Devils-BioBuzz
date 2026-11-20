@@ -11,7 +11,7 @@ import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 //import org.firstinspires.ftc.teamcode.Cogintilities.MirrorUtility;
 
-import org.firstinspires.ftc.teamcode.SubSystems.Gate;
+import org.firstinspires.ftc.teamcode.SubSystems.PollenGate;
 import org.firstinspires.ftc.teamcode.SubSystems.Intake;
 
 import org.firstinspires.ftc.teamcode.SubSystems.MecanumDrive;
@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.SubSystems.PollenShooter;
 
 
 import com.pedropathing.follower.Follower;
+import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
 
 import java.util.List;
@@ -60,23 +61,23 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
     public Intake intake;
     public PollenShooter pollenShooter;
     public NectarShooter nectarShooter;
-    public Gate gate;
-    //public Servo1D flowerPicker;
+    public PollenGate pollenGate;
 
 
 
     public void init(HardwareMap hardwareMap) throws InterruptedException {
 
-        // Hardware
-        MotorEx driveMotorRF = new MotorEx(hardwareMap, "RightFront").setCachingTolerance(0.01);
-        MotorEx driveMotorLF = new MotorEx(hardwareMap, "LeftFront").setCachingTolerance(0.01);
-        MotorEx driveMotorLR = new MotorEx(hardwareMap, "LeftRear").setCachingTolerance(0.01);
-        MotorEx driveMotorRR = new MotorEx(hardwareMap, "RightRear").setCachingTolerance(0.01);
+        // Motors
+        MotorEx driveMotorRF = hardwareMap.get(MotorEx.class, "RightFront");
+        MotorEx driveMotorLF = hardwareMap.get(MotorEx.class, "LeftFront");
+        MotorEx driveMotorLR = hardwareMap.get(MotorEx.class, "LeftRear");
+        MotorEx driveMotorRR = hardwareMap.get(MotorEx.class, "RightRear");
+        MotorEx intakeMotor  = hardwareMap.get(MotorEx.class, "intake");
+        DcMotorEx pollenShooterMotor = hardwareMap.get(DcMotorEx.class, "PollenMotor");
+        DcMotorEx nectarShooterMotor = hardwareMap.get(DcMotorEx.class, "NectarShooter");
+        Servo pollenGateServo = hardwareMap.get(Servo.class, "pollenGate");
 
 //        follower = Constants.createFollower(hardwareMap);
-
-        MotorEx intakeMotor    = new MotorEx(hardwareMap, "Intake").setCachingTolerance(0.01);
-
 
         ctrlHubs = hardwareMap.getAll(LynxModule.class);
         for (LynxModule hub : ctrlHubs) {
@@ -87,13 +88,13 @@ public class Robot extends com.seattlesolvers.solverslib.command.Robot{
         //Instantiate Subsystems
         mecanumDrive = new MecanumDrive(driveMotorLF, driveMotorLR, driveMotorRF, driveMotorRR);
         intake  = new Intake(intakeMotor);
-        pollenShooter      = new PollenShooter(hardwareMap.get(DcMotorEx.class, "PollenShooter"));
-        nectarShooter      = new NectarShooter(hardwareMap.get(DcMotorEx.class, "NectarShooter"));
-        //gate         = new Gate(hardwareMap.get(Servo.class, "DropServo"));
+        pollenShooter  = new PollenShooter(pollenShooterMotor);
+        nectarShooter = new NectarShooter(nectarShooterMotor);
+        pollenGate = new PollenGate(pollenGateServo);
 
 
         //Register Subsystems
-        register(mecanumDrive, intake, pollenShooter, nectarShooter);
+        register(mecanumDrive, intake, pollenShooter, nectarShooter, pollenGate);
 
         if (OP_MODE_TYPE.equals(OpModeType.AUTO)) {
             initHasMovement();

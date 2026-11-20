@@ -34,6 +34,7 @@ public class TestAll extends LinearOpMode {
 //        double speed = 1;
 
         Servo pollenGate = hardwareMap.get(Servo.class, "pollenGate");
+        pollenGate.setPosition(0.4);
         // nectarGate = hardwareMap.get(Servo.class, "nectarGate");
 
         //Intake
@@ -107,9 +108,9 @@ public class TestAll extends LinearOpMode {
 //                nectarGate.setPosition(0.0);
 //            }
             if (gamepad2.leftTriggerWasPressed()) {
-                pollenGate.setPosition(0.4);
-            } if (gamepad2.leftTriggerWasReleased()) {
                 pollenGate.setPosition(0.0);
+            } if (gamepad2.leftTriggerWasReleased()) {
+                pollenGate.setPosition(0.4);
             }
             if (gamepad2.aWasPressed()) {
                 if (currentMode == IntakeState.FORWARD) {

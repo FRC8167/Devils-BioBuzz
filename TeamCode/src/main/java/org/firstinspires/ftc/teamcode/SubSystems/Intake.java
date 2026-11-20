@@ -15,7 +15,7 @@ public class Intake extends SubsystemBase{
 
     private boolean isRunning;
 
-    private final double fSpeed = 0.75;
+    private final double fSpeed = 1.0;
     private final double rSpeed = -0.5;
     private double speed = 0;
     public MotorState motorstate = MotorState.STOP;
@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase{
 
     public Intake (MotorEx intakeMotor){
         this.intakeMotor = intakeMotor;
-        intakeMotor.setInverted(true);
+        intakeMotor.setInverted(false);
         stop();
     }
 
